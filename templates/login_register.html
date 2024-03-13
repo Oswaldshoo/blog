@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Blog</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    {% if current_user.is_authenticated %}
+        <h1>Welcome, {{ current_user.username }}!</h1>
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+        <hr>
+        <!-- Display posts here -->
+        {% for post in posts %}
+            <div class="post">
+                <h2>{{ post[1] }}</h2>
+                <p><span class="username">{{ post[4] }}</span> - {{ post[3] }}</p>
+                <p>{{ post[2] }}</p>
+                <a href="{{ url_for('post', post_id=post[0]) }}">Read more</a>
+                <hr>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h1>Simple Blog</h1>
+        <p>If you have an account, please <a href="{{ url_for('auth.login') }}">log in</a>.</p>
+        <p>If you don't have an account, please <a href="{{ url_for('auth.register') }}">register</a>.</p>
+    {% endif %}
+</body>
+</html>

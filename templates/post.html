@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post[1] }} - Simple Blog</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>{{ post[1] }}</h1>
+    <p><span class="username">{{ post[4] }}</span> - {{ post[3] }}</p>
+    <p>{{ post[2] }}</p>
+    <hr>
+    <h2>Comments</h2>
+    <form method="post">
+        <textarea name="content" rows="4" cols="50" placeholder="Add a comment" required></textarea>
+        <br>
+        <button type="submit">Submit Comment</button>
+    </form>
+    <br>
+    {% for comment in comments %}
+        {% set time_difference = (datetime.utcnow() - datetime.strptime(comment[2], "%Y-%m-%d %H:%M:%S")).days %}
+        <div class="comment">
+            <p>
+                <span class="username">{{ comment[3] }}</span> - 
+                {{ comment[2] }} {% if time_difference > 1 %}<span class="late">(Late)</span>{% endif %}
+            </p>
+            <p>{{ comment[1] }}</p>  
+        </div>
+    {% endfor %}
+    
+    <br>
+    <a href="{{ url_for('index') }}">Back to Posts</a> 
+</body>
+</html>
